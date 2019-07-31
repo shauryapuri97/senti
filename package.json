@@ -11,7 +11,8 @@
     "react-dnd-html5-backend": "^3.0.2",
     "react-dom": "^16.3.1",
     "react-scripts": "3.0.1",
-    "react-tag-input": "6.4.0"
+    "react-tag-input": "6.4.0",
+    "recharts": "^1.6.2"
   },
   "scripts": {
     "start": "react-scripts start",

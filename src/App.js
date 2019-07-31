@@ -5,6 +5,16 @@ import Button from 'react-bootstrap/Button'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { WithContext as ReactTags } from 'react-tag-input';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import Card from 'react-bootstrap/Card'
+
+const data = [
+    {name: 'Week 1', uv: 400, pv: 2400, amt: 2400},
+    {name: 'Week 2', uv: 300, pv: 2400, amt: 2400},
+    {name: 'Week 3', uv: 300, pv: 2400, amt: 2400},
+    {name: 'Week 4', uv: 200, pv: 2400, amt: 2400},
+    {name: 'Week 5', uv: 278, pv: 2400, amt: 2400}
+];
 
 const KeyCodes = {
     comma: 188,
@@ -79,6 +89,41 @@ class App extends React.Component {
                     />
                 </div>
                 <div className="results-body">
+                    <div className="graph-view">
+                        <LineChart width={850} height={450} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                        </LineChart>
+                    </div>
+                    <div className="news-view">
+                        <Card style={{ width: '22rem' }}>
+                            <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                                <Card.Text>
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                                </Card.Text>
+                                <Card.Link href="#">Card Link</Card.Link>
+                                <Card.Link href="#">Another Link</Card.Link>
+                            </Card.Body>
+                        </Card>
+                        <Card style={{ width: '22rem' }}>
+                            <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                                <Card.Text>
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                                </Card.Text>
+                                <Card.Link href="#">Card Link</Card.Link>
+                                <Card.Link href="#">Another Link</Card.Link>
+                            </Card.Body>
+                        </Card>
+                    </div>
                 </div>
             </div>
         )

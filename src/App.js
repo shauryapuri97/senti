@@ -2,18 +2,16 @@ import React, {useState} from 'react';
 import logo from './assets/Logo.png'
 import './App.css';
 import Button from 'react-bootstrap/Button'
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
 import { WithContext as ReactTags } from 'react-tag-input';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
-import Card from 'react-bootstrap/Card'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import NewsCard from './components/NewsCard'
 
 const data = [
-    {name: 'Week 1', uv: 400, pv: 2400, amt: 2400},
-    {name: 'Week 2', uv: 300, pv: 2400, amt: 2400},
-    {name: 'Week 3', uv: 300, pv: 2400, amt: 2400},
-    {name: 'Week 4', uv: 200, pv: 2400, amt: 2400},
-    {name: 'Week 5', uv: 278, pv: 2400, amt: 2400}
+    {name: 'Week 1', DB: 400, JPM: 600, TES: 200},
+    {name: 'Week 2', DB: 300, JPM: 200, TES: 300},
+    {name: 'Week 3', DB: 300, JPM: 300, TES: 350},
+    {name: 'Week 4', DB: 200, JPM: 400, TES: 250},
+    {name: 'Week 5', DB: 278, JPM: 800, TES: 150}
 ];
 
 const KeyCodes = {
@@ -26,17 +24,18 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
 class App extends React.Component {
     constructor(props) {
         super(props);
- 
+
         this.state = {
             tags: [
-                { id: 'DeutscheBank', text: 'Deutsche Bank' }
+                { id: 'DB', text: 'Deutsche Bank', color:'#8884d8'}
              ],
             suggestions: [
-                { id: 'DeutscheBank', text: 'Deutsche Bank' },
-                { id: 'JPMorgan', text: 'JP Morgan' },
-                { id: 'Tesla', text: 'Tesla' }
+                { id: 'DB', text: 'Deutsche Bank', color:'#8884d8'},
+                { id: 'JPM', text: 'JP Morgan', color:'#0d0d0d'},
+                { id: 'TES', text: 'Tesla', color:'#dbdbdb'}
              ]
         };
+
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
@@ -65,6 +64,11 @@ class App extends React.Component {
     }
     render() {
         const { tags, suggestions } = this.state;
+        const companyIds = [];
+        tags.forEach((tag) => {
+            companyIds.push([tag.id, tag.color]);
+        });
+        console.log(companyIds);
         return (
             <div className="App">
                 <div className="Navbar">
@@ -91,7 +95,12 @@ class App extends React.Component {
                 <div className="results-body">
                     <div className="graph-view">
                         <LineChart width={850} height={450} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                            <Legend />
+                            {
+                                companyIds.map((company) => {
+                                return (<Line type='monotone' dataKey={`${company[0]}`} stroke={`${company[1]}`}/>)
+                                })
+                            }
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                             <XAxis dataKey="name" />
                             <YAxis />
@@ -99,30 +108,8 @@ class App extends React.Component {
                         </LineChart>
                     </div>
                     <div className="news-view">
-                        <Card style={{ width: '22rem' }}>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                                <Card.Link href="#">Card Link</Card.Link>
-                                <Card.Link href="#">Another Link</Card.Link>
-                            </Card.Body>
-                        </Card>
-                        <Card style={{ width: '22rem' }}>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                                <Card.Link href="#">Card Link</Card.Link>
-                                <Card.Link href="#">Another Link</Card.Link>
-                            </Card.Body>
-                        </Card>
+                        <NewsCard />
+                        <NewsCard />
                     </div>
                 </div>
             </div>

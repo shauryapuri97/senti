@@ -27,12 +27,12 @@ class App extends React.Component {
 
         this.state = {
             tags: [
-                { id: 'DB', text: 'Deutsche Bank', color:'#8884d8'}
+                { id: 'DB', text: 'Deutsche Bank', color:'#15598A'}
              ],
             suggestions: [
-                { id: 'DB', text: 'Deutsche Bank', color:'#8884d8'},
-                { id: 'JPM', text: 'JP Morgan', color:'#0d0d0d'},
-                { id: 'TES', text: 'Tesla', color:'#dbdbdb'}
+                { id: 'DB', text: 'Deutsche Bank', color:'#15598A'},
+                { id: 'JPM', text: 'JP Morgan', color:'#4E342E'},
+                { id: 'TES', text: 'Tesla', color:'#e82127'}
              ]
         };
 
@@ -77,8 +77,7 @@ class App extends React.Component {
                         {/* <a href={logo} class="brand-logo">Logo</a> */}
                         <img src={logo} className="App-logo" alt="logo" />
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
-                            <li><Button variant="primary">Dashboard</Button></li>
-                            <li><Button variant="secondary">Compare</Button></li>
+                            <li><Button className="App-Button" variant="primary">Log Out</Button></li>
                         </ul>
                         </div>
                     </nav>

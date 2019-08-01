@@ -33,7 +33,14 @@ class App extends React.Component {
                 { id: 'DB', text: 'Deutsche Bank', color:'#15598A'},
                 { id: 'JPM', text: 'JP Morgan', color:'#4E342E'},
                 { id: 'TES', text: 'Tesla', color:'#e82127'}
-             ]
+             ],
+             newsData: [
+                {title:'Title 1', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+                {title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+                {title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+                {title:'Title 4', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+                {title:'Title 5', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'}
+            ]
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -63,7 +70,7 @@ class App extends React.Component {
         this.setState({ tags: newTags });
     }
     render() {
-        const { tags, suggestions } = this.state;
+        const { tags, suggestions, newsData } = this.state;
         const companyIds = [];
         tags.forEach((tag) => {
             companyIds.push([tag.id, tag.color]);
@@ -107,8 +114,14 @@ class App extends React.Component {
                         </LineChart>
                     </div>
                     <div className="news-view">
-                        <NewsCard />
-                        <NewsCard />
+                        <h4>{newsData.length} articles parsed</h4>
+                        {
+                            newsData.map((news, index) => {
+                                if(index<3){
+                                    return (<NewsCard title={`${news.title}`} subtitle={`${news.subtitle}`} text={`${news.text}`} link={`${news.link}`}/>)
+                                }
+                            })
+                        }
                     </div>
                 </div>
             </div>

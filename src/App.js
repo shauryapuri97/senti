@@ -53,10 +53,18 @@ const App = () => {
     ]);
 
     const [suggestions, setSuggestions] = useState([
-        { id: 'DB', text: 'Deutsche Bank', color:'#15598A'},
-        { id: 'JPM', text: 'JP Morgan', color:'#4E342E'},
-        { id: 'TES', text: 'Tesla', color:'#e82127'},
-        { id: 'SPO', text: 'Spotify', color:'#84bd00'}
+        { id: 'DB', text: 'Deutsche Bank', color:'#15598A'}, //blue
+        { id: 'JPM', text: 'JP Morgan', color:'#4E342E'}, //brown
+        { id: 'TES', text: 'Tesla', color:'#e82127'}, //red
+        { id: 'SPO', text: 'Spotify', color:'#84bd00'}, //green
+        { id: 'CS', text: 'Credit Suisse', color:'#2c3e50'}, //black
+        { id: 'ASO', text: 'ASOS', color:'#ffbfcf'}, //pink
+        { id: 'ABC', text: 'Alphabet', color:'#f39c12'}, //orange
+        { id: 'AMZ', text: 'Amazon', color:'#f1c40f'}, //yellow
+        {id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d'}, //grey
+        { id: 'FB', text: 'Facebook', color:'#4a69bd'}, //navy blue
+        { id: 'GMS', text: 'Goldman Sachs', color:'#f8c291'}, //skin
+        { id: 'BAR', text: 'Barclays', color:'#82ccdd'}, //sky blue
     ]);
 
     const [newsData, setNewsData] = useState([

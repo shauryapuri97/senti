@@ -14,6 +14,10 @@ class NewsCard extends React.Component {
                     <Card.Subtitle className="mb-2 text-muted">{this.props.subtitle}</Card.Subtitle>
                     <Card.Text>{this.props.text.substring(0, 150)} ...</Card.Text>
                     <Card.Link style={{ color: '#15598A'}} href="#">{this.props.link}</Card.Link>
+                    <Button onClick={() => {
+                        this.props.updateSelectedNews(this.props.postId);
+                        this.props.setLgShow(true);
+                    }}>Large modal</Button>
                 </Card.Body>
             </Card>
         )

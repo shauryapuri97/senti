@@ -14,6 +14,14 @@
     flex: 1 0 auto;
 }
 
+.filters {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: left;
+}
+
 .App-logo {
     max-height: 55px;
     max-width: 35%; 
@@ -29,7 +37,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
 }
@@ -51,7 +58,10 @@
     background-color: #15598A;
 }
 
-/* Example Styles for React Tags*/
+.senti-green {
+    color: green;
+}
+/* Styles for React Tags*/
 
   div.ReactTags__tags {
       position: relative;
@@ -115,3 +125,57 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
     background: #b7cfe0;
     cursor: pointer;
 }
+
+
+/* <p class="red">US authorities fined Deutsche Bank and two other banks for market manipulation on Monday.</p>
+                
+                <br/>
+                <p class="green">The banks were accused of manipulating futures markets in precious metals through a 
+                process known as "spoofing," the US Justice Department and Commodity Futures Trading Commission (CFTC) announced.
+                </p>
+                <br/>
+                <p class="black">Read more: US fines Deutsche Bank $41 million for money laundering control lapses</p>
+                
+                <br/>
+                <p class="red">Illegal manipulation</p>
+                <br/>
+                <p class="green">Deutsche Bank was fined $30 million 
+                (€24 million), while UBS agreed to pay $15 million and HSBC took a $1.6 million hit.</p>
+                <br/>
+                <p class="green">
+                Investigators looked into whether traders at the banks had worked to manipulate futures markets in precious metals.
+                </p>
+                <br/>
+                <p class="green">Including already-indicted ex-UBS trader Andre Flotron, seven former brokers and a 
+                tech consultant — based in New York, Switzerland, Britain, Australia and the United Arab Emirates — face charges 
+                for placing, then aborting, deals to manipulate various metal market prices from early 2008 to 2014.</p>
+                <br/>
+                <p 
+                class="red">Read more: Deutsche Bank expects loss after US tax law</p>
+                <br/>
+                <p class="black">\'</p><p class="green">
+                Conduct like this\'</p>
+                <br/>
+                <p class="green">After the verdict on Monday, John Cronan, the acting head of the criminal
+                division of the Justice Department, released a statement saying: "Conduct like this poses significant risk of eroding confidence
+                in US markets and creates an uneven playing field for legitimate traders and investors.</p>
+                <br/>
+                <p class="red">
+                James McDonald, the CFTC\'s director of enforcement, also hailed the ruling: "We are equally committed to identifying
+                and punishing these bad actors.</p><p class="black">"</p>
+                <br/>
+                <p class="black">Read more:</p><p class="black">Deutsche Bank \'subpoenaed to provide Trump account data\'</p>
+                <br/>
+                <p class="red">Damaged reputation: Deutsche Bank has pledged to strengthen internal controls to prevent further illegal manipulation of markets, but the latest fine won\'t help its reputation in the US, where in recent years it paid $7.2 billion in fines for toxic mortgages issued ahead of the housing market collapse of 2008, and was separately fined $2.5 billion for manipulation in the Libor scandal.</p>
+                <br/>
+                <p class="red">Read more: When the financial crisis hit Germany</p>
+                <br/>
+                <p class="black">What is spoofing?</p><p class="green">A complicated but effective method of manipulating markets in which bankers place and then abort trades in order to create the appearance of demand and inflate prices — in this case on gold, silver and other precious metals.</p>
+                <br/>
+                <p class="red">A rare charge: Only three people had previously ever been charged with spoofing.</p><p class="red">The Deutsche Bank trader David Liew pleaded guilty in June and has cooperated with investigators since.</p>
+                <br/>
+                <p class="black">What happens next?</p><p class="red">The Reuters news agency reports that Deutsche Bank looks likely to post its third consecutive annual loss on Friday, when it releases the numbers for 2017, prompting some investors to rethink the future of CEO John Cryan.</p>
+                <br/>
+                <p class="black">mkg/aw</p><p class="black">(Reuters, AFP, dpa)</p>
+                <br/> */
+                

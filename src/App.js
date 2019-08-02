@@ -8,21 +8,7 @@ import NewsCard from './components/NewsCard'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
 import renderHTML from 'react-render-html';
-
-const data = [
-    {name: 'Jan', DB: 400, TES: 200},
-    {name: 'Feb', DB: 300, JPM: 200, TES: 300},
-    {name: 'Mar', DB: 300, JPM: 300, TES: 350},
-    {name: 'Apr', DB: 200, JPM: 400, TES: 250},
-    {name: 'May', DB: 278, JPM: 800, TES: 150},
-    {name: 'Jun', DB: 400, JPM: 600, TES: 200},
-    {name: 'Jul', DB: 300, JPM: 200, TES: 300},
-    {name: 'Aug', DB: 300, TES: 350},
-    {name: 'Sept', DB: 200, JPM: 400, TES: 250},
-    {name: 'Oct', DB: 278, JPM: 800, TES: 150},
-    {name: 'Nov', DB: 200, JPM: 400, TES: 250},
-    {name: 'Dec', DB: 278, JPM: 800, TES: 150}
-];
+import axios from 'axios';
 
 const articleQuantdata = [
     {name: 'Week 1', quant: 100},
@@ -60,6 +46,8 @@ setYearsFilter(new Date().getFullYear());
 
 const App = () => {
 
+    const [data, setData] = useState([]);
+
     const [tags, setTags] = useState([
         { id: 'DB', text: 'Deutsche Bank', color:'#15598A'}
     ]);
@@ -67,7 +55,8 @@ const App = () => {
     const [suggestions, setSuggestions] = useState([
         { id: 'DB', text: 'Deutsche Bank', color:'#15598A'},
         { id: 'JPM', text: 'JP Morgan', color:'#4E342E'},
-        { id: 'TES', text: 'Tesla', color:'#e82127'}
+        { id: 'TES', text: 'Tesla', color:'#e82127'},
+        { id: 'SPO', text: 'Spotify', color:'#84bd00'}
     ]);
 
     const [newsData, setNewsData] = useState([
@@ -82,6 +71,15 @@ const App = () => {
     const [companyIds, updateCompanyIds] = useState(tags);
     const [filterYears, setFilterYear] = useState(yearsFilter);
     const [selectedNews, updateSelectedNews] = useState(null);
+
+    //GET SCORES DATA FROM SERVER
+    const fetchData = async (selectedYear) => {
+        const result = await axios(
+            'http://52.17.50.92/api/getScores/'+selectedYear,
+        );
+    
+        setData(result.data);
+    };
 
     const handleDelete = (i) => {
         setTags(tags => 
@@ -105,10 +103,17 @@ const App = () => {
         setTags(newTags);
     }
 
-    //Changes the view on state change
+    const handleYearSelect = (e) => {
+        fetchData(e.target.value);
+    }
+
     useEffect(() => {
         updateCompanyIds(tags);
     });
+
+    useEffect(() => {
+        fetchData(filterYears[0]);
+    }, []);
 
     return (
         <div className="App">
@@ -133,7 +138,7 @@ const App = () => {
                 />
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Control as="select">
+                        <Form.Control as="select" defaultValue={filterYears[0]} onChange={handleYearSelect}>
                         {
                             filterYears.map((year) => {
                                 return (<option>{year}</option>)

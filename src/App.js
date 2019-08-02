@@ -68,17 +68,22 @@ const App = () => {
     ]);
 
     const [newsData, setNewsData] = useState([
-        {title:'Title 1', subtitle:'This is a subtitle', text:'<p className="senti-green">The banks were accused of manipulating futures markets in precious metals through a process known as "spoofing," the US Justice Department and Commodity Futures Trading Commission (CFTC) announced</p>', link:'www.google.com'},
-        {title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {title:'Title 4', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {title:'Title 5', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'}
+        {month:'1', year: 2019, title:'Title 1', subtitle:'This is a subtitle', text:'<p className="senti-green">The banks were accused of manipulating futures markets in precious metals through a process known as "spoofing," the US Justice Department and Commodity Futures Trading Commission (CFTC) announced</p>', link:'www.google.com'},
+        {month:'3', year: 2019, title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'3', year: 2019, title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'4', year: 2019, title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'4', year: 2019, title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'5', year: 2019, title:'Title 4', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'5', year: 2019, title:'Title 5', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'}
     ]);
 
     const [lgShow, setLgShow] = useState(false);
     const [companyIds, updateCompanyIds] = useState(tags);
     const [filterYears, setFilterYear] = useState(yearsFilter);
     const [selectedNews, updateSelectedNews] = useState(null);
+    // const [newsView, updateNewsView] = useState(newsData.sort((a,b)=>{
+    //     return b.month - a.month
+    // }));
 
     //GET SCORES DATA FROM SERVER
     const fetchData = async (selectedYear) => {
@@ -114,6 +119,13 @@ const App = () => {
     const handleYearSelect = (e) => {
         fetchData(e.target.value);
     }
+
+    // const handleNewsUpdate = (e) => {
+        
+    //    console.log(newsData);
+    //     updateNewsView();
+
+    // }
 
     useEffect(() => {
         updateCompanyIds(tags);
@@ -159,7 +171,7 @@ const App = () => {
             </div>
             <div className="results-body">
                 <div className="graph-view">
-                    <LineChart width={850} height={450} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                    <LineChart width={850} height={450} /*onClick={handleNewsUpdate}*/ data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Legend />
                         {
                             companyIds.map((company) => {
@@ -173,10 +185,10 @@ const App = () => {
                     </LineChart>
                 </div>
                 <div className="news-view">
-                    <h4>{newsData.length} articles parsed</h4>
+                    <h6>Top Articles</h6>
                     {
                         newsData.map((news, index) => {
-                            if(index<2){
+                            if(index<3){
                                 return (<NewsCard
                                     postId={index}
                                     title={`${news.title}`}

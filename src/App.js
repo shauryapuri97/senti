@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
 import renderHTML from 'react-render-html';
 import axios from 'axios';
+import AvgScoreCard from './components/AvgScoreCard'
 
 const articleQuantdata = [
     {name: 'Week 1', quant: 100},
@@ -171,6 +172,17 @@ const App = () => {
             </div>
             <div className="results-body">
                 <div className="graph-view">
+                    <h6 style={{ marginLeft:'55px' }}><strong>Average Senti Scores</strong></h6>
+                    <div className="avg-company-view">
+                        {
+                            companyIds.map((company) => {
+                                return (<AvgScoreCard
+                                    company={company}
+                                />)
+                            })
+                        }
+                    </div>
+                    <h6 style={{ marginLeft:'55px' }}><strong>Senti Scores Over Time</strong></h6>
                     <LineChart width={850} height={450} /*onClick={handleNewsUpdate}*/ data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Legend />
                         {
@@ -185,7 +197,7 @@ const App = () => {
                     </LineChart>
                 </div>
                 <div className="news-view">
-                    <h6>Top Articles</h6>
+                    <h6><strong>Top Articles</strong></h6>
                     {
                         newsData.map((news, index) => {
                             if(index<3){

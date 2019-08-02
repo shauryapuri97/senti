@@ -2,14 +2,22 @@
     display: flex;
     flex-direction: row;
     align-content: center;
-    align-items: center;
+    align-items: top;
     justify-content: center;
 }
 
 .graph-view {
     flex: 3 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
+.avg-company-view {
+    display: flex;
+    flex-direction: row;
+    color: #eee;
+}
 .news-view {
     flex: 1 0 auto;
 }

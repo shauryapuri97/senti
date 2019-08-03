@@ -22,6 +22,11 @@
     flex: 1 0 auto;
 }
 
+.overflow-scrolling{
+    max-height: 575px;
+    overflow-y: auto;
+}
+
 .filters {
     display: flex;
     flex-direction: row;

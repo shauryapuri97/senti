@@ -10,6 +10,7 @@ import { Modal } from 'react-bootstrap';
 import renderHTML from 'react-render-html';
 import axios from 'axios';
 import AvgScoreCard from './components/AvgScoreCard'
+import OverflowScrolling from 'react-overflow-scrolling';
 
 const articleQuantdata = [
     {name: 'Week 1', quant: 100},
@@ -198,22 +199,24 @@ const App = () => {
                 </div>
                 <div className="news-view">
                     <h6><strong>Top Articles</strong></h6>
-                    {
-                        newsData.map((news, index) => {
-                            if(index<3){
-                                return (<NewsCard
-                                    postId={index}
-                                    title={`${news.title}`}
-                                    subtitle={`${news.subtitle}`}
-                                    text={`${news.text}`}
-                                    link={`${news.link}`}
-                                    setLgShow={setLgShow}
-                                    lgShow={lgShow}
-                                    updateSelectedNews={updateSelectedNews}
-                                />)
-                            }
-                        })
-                    }
+                    <div className='overflow-scrolling'>
+                        {
+                            newsData.map((news, index) => {
+                                if(index<3){
+                                    return (<NewsCard
+                                        postId={index}
+                                        title={`${news.title}`}
+                                        subtitle={`${news.subtitle}`}
+                                        text={`${news.text}`}
+                                        link={`${news.link}`}
+                                        setLgShow={setLgShow}
+                                        lgShow={lgShow}
+                                        updateSelectedNews={updateSelectedNews}
+                                    />)
+                                }
+                            })
+                        }
+                    </div>
                 </div>
             </div>
             <Modal

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import Badge from 'react-bootstrap/Badge'
 
 class NewsCard extends React.Component {
 
@@ -9,6 +10,7 @@ class NewsCard extends React.Component {
         return (
             <Card style={{ width: '22rem' }}>
                 <Card.Body>
+                    <Badge style={{ color: '#eee' }}variant="dark">{this.props.companyID}</Badge>
                     <Card.Title>{this.props.title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">{this.props.subtitle}</Card.Subtitle>
                     <Card.Text>{this.props.text.substring(0, 150)} ...</Card.Text>

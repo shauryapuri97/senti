@@ -70,13 +70,13 @@ const App = () => {
     ]);
 
     const [newsData, setNewsData] = useState([
-        {month:'1', year: 2019, title:'Title 1', subtitle:'This is a subtitle', text:'<p className="senti-green">The banks were accused of manipulating futures markets in precious metals through a process known as "spoofing," the US Justice Department and Commodity Futures Trading Commission (CFTC) announced</p>', link:'www.google.com'},
-        {month:'3', year: 2019, title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'3', year: 2019, title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'4', year: 2019, title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'4', year: 2019, title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'5', year: 2019, title:'Title 4', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'5', year: 2019, title:'Title 5', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'}
+        {month:'1', year: 2019, companyID: 'DB', title:'Title 1', subtitle:'This is a subtitle', text:'<p className="senti-green">The banks were accused of manipulating futures markets in precious metals through a process known as "spoofing," the US Justice Department and Commodity Futures Trading Commission (CFTC) announced</p>', link:'www.google.com'},
+        {month:'3', year: 2019, companyID: 'JPM', title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'3', year: 2019, companyID: 'JPM', title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'4', year: 2019, companyID: 'TES', title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'4', year: 2019, companyID: 'JPM', title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'5', year: 2019, companyID: 'TES', title:'Title 4', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
+        {month:'5', year: 2019, companyID: 'DB', title:'Title 5', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'}
     ]);
 
     const [lgShow, setLgShow] = useState(false);
@@ -94,6 +94,14 @@ const App = () => {
         );
     
         setData(result.data);
+    };
+    //GET NEWS DATA
+    const fetchNewsData = async (selectedMonth, selectedYear) => {
+        const result = await axios(
+            'http://52.17.50.92/api/getScores/'+selectedMonth+'/'+selectedYear,
+        );
+    
+        setNewsData(result.data);
     };
 
     const handleDelete = (i) => {
@@ -120,21 +128,24 @@ const App = () => {
 
     const handleYearSelect = (e) => {
         fetchData(e.target.value);
+        //fetchNewsData('12',e.target.value);
     }
 
-    // const handleNewsUpdate = (e) => {
+    const handleNewsUpdate = (e, selectedYear) => {
         
-    //    console.log(newsData);
-    //     updateNewsView();
+       console.log(new Date().getMonth());
+       //fetchNewsData(e.target.value, selectedYear);
+        // updateNewsView();
 
-    // }
+    }
 
     useEffect(() => {
         updateCompanyIds(tags);
-    });
+    }, [tags]);
 
     useEffect(() => {
         fetchData(filterYears[0]);
+        //fetchNewsData(new Date().getMonth(),filterYears[0]);
     }, []);
 
     return (
@@ -184,7 +195,7 @@ const App = () => {
                         }
                     </div>
                     <h6 style={{ marginLeft:'55px' }}><strong>Senti Scores Over Time</strong></h6>
-                    <LineChart width={850} height={450} /*onClick={handleNewsUpdate}*/ data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                    <LineChart width={850} height={450} onClick={handleNewsUpdate} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Legend />
                         {
                             companyIds.map((company) => {
@@ -201,19 +212,22 @@ const App = () => {
                     <h6><strong>Top Articles</strong></h6>
                     <div className='overflow-scrolling'>
                         {
-                            newsData.map((news, index) => {
-                                if(index<3){
-                                    return (<NewsCard
-                                        postId={index}
-                                        title={`${news.title}`}
-                                        subtitle={`${news.subtitle}`}
-                                        text={`${news.text}`}
-                                        link={`${news.link}`}
-                                        setLgShow={setLgShow}
-                                        lgShow={lgShow}
-                                        updateSelectedNews={updateSelectedNews}
-                                    />)
-                                }
+                            companyIds.map(company=>{
+                                return (newsData.map((news, index) => {
+                                    if(company.id===news.companyID){
+                                        return (<NewsCard
+                                            postId={index}
+                                            companyID = {news.companyID}
+                                            title={`${news.title}`}
+                                            subtitle={`${news.subtitle}`}
+                                            text={`${news.text}`}
+                                            link={`${news.link}`}
+                                            setLgShow={setLgShow}
+                                            lgShow={lgShow}
+                                            updateSelectedNews={updateSelectedNews}
+                                        />)
+                                    }
+                                }))
                             })
                         }
                     </div>

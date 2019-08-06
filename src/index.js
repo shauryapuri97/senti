@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
+import "react-bootstrap-toggle/dist/bootstrap2-toggle.css";
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

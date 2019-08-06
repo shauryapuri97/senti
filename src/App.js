@@ -3,19 +3,21 @@ import logo from './assets/Logo.png'
 import './App.css';
 import Button from 'react-bootstrap/Button'
 import { WithContext as ReactTags } from 'react-tag-input';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { ComposedChart, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import NewsCard from './components/NewsCard'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
 import renderHTML from 'react-render-html';
 import axios from 'axios';
 import AvgScoreCard from './components/AvgScoreCard'
+import Toggle from 'react-bootstrap-toggle';
 
 const KeyCodes = {
     comma: 188,
     enter: 13,
 };
 
+const apiKey = '64V2GZ0TDHT7A8XJ';
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 //Set the Years filter
@@ -32,7 +34,7 @@ setYearsFilter(new Date().getFullYear());
 const App = () => {
 
     const [tags, setTags] = useState([
-        { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}
+        { id: 'JPM', text: 'JP Morgan', color:'#4E342E', avgScore: 0.32}, //brown
     ]);
 
     const [suggestions, setSuggestions] = useState([
@@ -54,10 +56,11 @@ const App = () => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [data, setData] = useState([]);
     const [newsData, setNewsData] = useState([]);
-
+    const [stockData, setStockData] = useState([]);
     const [lgShow, setLgShow] = useState(false);
     const [selectedNews, updateSelectedNews] = useState(null);
     const [newsView, setNewsView] = useState([]);
+    const [toggle, setToggle] = useState(false);
 
     const fetchData = async (selectedYear) => {
         const result = await axios(
@@ -75,10 +78,21 @@ const App = () => {
         setNewsData(result.data);
     };
 
+    const fetchStockData = async (symbol) => {
+        const result = await axios(
+            'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol='+symbol+'&apikey='+apiKey+'&datatype=json'
+        );
+        
+        let sData = result.data['Monthly Time Series'];
+
+        setStockData(sData);
+    }
+    //seperate useeffect for tags
     useEffect(()=>{
         fetchData(selectedYear);
         fetchNewsData(selectedYear);
-    },[selectedYear]);
+        fetchStockData(tags[0].id);
+    },[selectedYear, tags]);
 
     useEffect(()=>{
 
@@ -109,6 +123,139 @@ const App = () => {
         setNewsView(arr);
     },[newsData, selectedYear, selectedMonth, tags])
 
+    const togglePrep = () => {
+        
+        const keyName = tags[0].id+'StockPrice';
+        data.forEach((monthData,index)=>{
+            if (index===0){
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf([selectedYear-1]+'-12')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+
+            } else if (index===1) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-01')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+
+            } else if (index===2) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-02')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===3) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-03')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===4) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-04')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===5) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-05')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===6) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-06')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===7) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-07')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===8) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-08')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===9) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-09')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===10) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-10')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            } else if (index===11) {
+                const sdata = Object.keys(stockData)
+                    .filter(key => key.toString().indexOf(selectedYear+'-11')!==-1)
+                    .reduce((obj,key)=>{
+                        obj[key] = stockData[key];
+                        return obj;
+                    },{})
+
+                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                
+            }
+        });
+    }
+
+    const onToggle = () => {
+        togglePrep();
+        setToggle(!toggle);
+    }
+
     const handleDelete = (i) => {
         setTags(tags => 
             (tags.filter((tag, index) => index !== i))
@@ -117,6 +264,7 @@ const App = () => {
  
     const handleAddition = (tag) => {
         setTags(tags => ([...tags, tag]));
+        fetchStockData(tag.id);
     }
 
 
@@ -171,6 +319,14 @@ const App = () => {
                         </Form.Control>
                     </Form.Group>
                 </Form>
+                <Toggle
+                    onClick={onToggle}
+                    on={'Stock On'}
+                    off={'Stock Off'}
+                    size="xs"
+                    offstyle="danger"
+                    active={toggle}
+                />
 
             </div>
             <div className="results-body">
@@ -186,18 +342,26 @@ const App = () => {
                         }
                     </div>
                     <h6 style={{ marginLeft:'55px' }}><strong>Senti Scores Over Time</strong></h6>
-                    <LineChart width={850} height={450} onClick={handleNewsUpdate} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                    <ComposedChart width={850} height={450} onClick={handleNewsUpdate} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Legend />
                         {
                             tags.map((company) => {
-                                return (<Line type='monotone' dataKey={`${company.id}`} stroke={`${company.color}`}/>)
+                                return (
+                                    <Line yAxisId="left" type='monotone' dataKey={`${company.id}`} stroke={`${company.color}`}/>
+                                )
                             })
                         }
                         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                         <XAxis dataKey="name" />
-                        <YAxis />
+                        <YAxis yAxisId="left" orientation='left' />
+                        { 
+                            toggle === true ? <YAxis yAxisId="right" orientation='right' /> : null
+                        }
+                        {
+                            toggle === true ? <Line yAxisId="right" type='monotone' dataKey={[tags[0].id].toString()+'StockPrice'} stroke={`${tags[0].color}`} strokeDasharray="5 5"/> : null
+                        }
                         <Tooltip />
-                    </LineChart>
+                    </ComposedChart>
                 </div>
                 <div className="news-view">
                     <h6><strong>Most Recent Articles</strong></h6>

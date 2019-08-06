@@ -10,7 +10,7 @@ class NewsCard extends React.Component {
         return (
             <Card style={{ width: '22rem' }}>
                 <Card.Body>
-                    <Badge style={{ color: '#eee' }}variant="dark">{this.props.companyID}</Badge>
+                    <Badge style={{ backgroundColor:this.props.company.color, color: '#eee' }}variant="dark">{this.props.companyID}</Badge>
                     <Card.Title>{this.props.title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">{this.props.subtitle}</Card.Subtitle>
                     <Card.Text>{this.props.text.substring(0, 150)} ...</Card.Text>

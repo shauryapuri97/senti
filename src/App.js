@@ -51,41 +51,34 @@ const App = () => {
     const [data, setData] = useState([]);
 
     const [tags, setTags] = useState([
-        { id: 'DB', text: 'Deutsche Bank', color:'#15598A'}
+        { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}
     ]);
 
     const [suggestions, setSuggestions] = useState([
-        { id: 'DB', text: 'Deutsche Bank', color:'#15598A'}, //blue
-        { id: 'JPM', text: 'JP Morgan', color:'#4E342E'}, //brown
-        { id: 'TES', text: 'Tesla', color:'#e82127'}, //red
-        { id: 'SPO', text: 'Spotify', color:'#84bd00'}, //green
-        { id: 'CS', text: 'Credit Suisse', color:'#2c3e50'}, //black
-        { id: 'ASO', text: 'ASOS', color:'#ffbfcf'}, //pink
-        { id: 'ABC', text: 'Alphabet', color:'#f39c12'}, //orange
-        { id: 'AMZ', text: 'Amazon', color:'#f1c40f'}, //yellow
-        {id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d'}, //grey
-        { id: 'FB', text: 'Facebook', color:'#4a69bd'}, //navy blue
-        { id: 'GMS', text: 'Goldman Sachs', color:'#f8c291'}, //skin
-        { id: 'BAR', text: 'Barclays', color:'#82ccdd'}, //sky blue
+        { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}, //blue
+        { id: 'JPM', text: 'JP Morgan', color:'#4E342E', avgScore: 0.32}, //brown
+        { id: 'TES', text: 'Tesla', color:'#e82127', avgScore: 0.43}, //red
+        { id: 'SPO', text: 'Spotify', color:'#84bd00', avgScore: 0.57}, //green
+        { id: 'CS', text: 'Credit Suisse', color:'#2c3e50', avgScore: 0.66}, //black
+        { id: 'ASO', text: 'ASOS', color:'#ffbfcf', avgScore: 0.92}, //pink
+        { id: 'ABC', text: 'Alphabet', color:'#f39c12', avgScore: -0.54}, //orange
+        { id: 'AMZ', text: 'Amazon', color:'#f1c40f', avgScore: -0.25}, //yellow
+        {id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d', avgScore: -0.91}, //grey
+        { id: 'FB', text: 'Facebook', color:'#4a69bd', avgScore: 0.22}, //navy blue
+        { id: 'GMS', text: 'Goldman Sachs', color:'#f8c291', avgScore: 0.25}, //skin
+        { id: 'BAR', text: 'Barclays', color:'#82ccdd', avgScore: 0.32}, //sky blue
     ]);
 
-    const [newsData, setNewsData] = useState([
-        {month:'1', year: 2019, companyID: 'DB', title:'Title 1', subtitle:'This is a subtitle', text:'<p className="senti-green">The banks were accused of manipulating futures markets in precious metals through a process known as "spoofing," the US Justice Department and Commodity Futures Trading Commission (CFTC) announced</p>', link:'www.google.com'},
-        {month:'3', year: 2019, companyID: 'JPM', title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'3', year: 2019, companyID: 'JPM', title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'4', year: 2019, companyID: 'TES', title:'Title 2', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'4', year: 2019, companyID: 'JPM', title:'Title 3', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'5', year: 2019, companyID: 'TES', title:'Title 4', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'},
-        {month:'5', year: 2019, companyID: 'DB', title:'Title 5', subtitle:'This is a subtitle', text:'Some quick example text to build on the card title and make up the bulk of the cards content', link:'www.google.com'}
-    ]);
+    const [newsData, setNewsData] = useState([]);
 
     const [lgShow, setLgShow] = useState(false);
     const [companyIds, updateCompanyIds] = useState(tags);
     const [filterYears, setFilterYear] = useState(yearsFilter);
     const [selectedNews, updateSelectedNews] = useState(null);
-    // const [newsView, updateNewsView] = useState(newsData.sort((a,b)=>{
-    //     return b.month - a.month
-    // }));
+    const [selectedYear, setSelectedYear] = useState(filterYears[0]);
+
+    const arr =[];
+    const [newsView, updateNewsView] = useState(arr);
 
     //GET SCORES DATA FROM SERVER
     const fetchData = async (selectedYear) => {
@@ -95,13 +88,28 @@ const App = () => {
     
         setData(result.data);
     };
+    // //GET SUGGESTIONS DATA WITH COLOR CODES AND AVG YEARLY SCORES
+    // const fetchAvgScoresData = async (selectedYear) => {
+    //     const result = await axios(
+    //         'http://52.17.50.92/api/getScores/'+selectedYear,
+    //     );
+    
+    //     setSuggestions(result.data);
+    // };
+
     //GET NEWS DATA
     const fetchNewsData = async (selectedMonth, selectedYear) => {
         const result = await axios(
-            'http://52.17.50.92/api/getScores/'+selectedMonth+'/'+selectedYear,
+            'http://52.17.50.92/api/articles/'+selectedYear,
         );
-    
-        setNewsData(result.data);
+        
+        let arr = [];
+        result.data.forEach(result=>{
+            if(selectedMonth === result.month){
+                arr.push(result);
+            }
+        });
+        setNewsData(arr);
     };
 
     const handleDelete = (i) => {
@@ -128,24 +136,26 @@ const App = () => {
 
     const handleYearSelect = (e) => {
         fetchData(e.target.value);
-        //fetchNewsData('12',e.target.value);
+        setSelectedYear(e.target.value);
+        fetchNewsData(12, e.target.value);
     }
 
-    const handleNewsUpdate = (e, selectedYear) => {
+    const handleNewsUpdate = (e) => {
         
-       console.log(new Date().getMonth());
-       //fetchNewsData(e.target.value, selectedYear);
+       //console.log(newsView);
+       console.log(e.activeTooltipIndex+1);
+       fetchNewsData(e.activeTooltipIndex+1, selectedYear);
         // updateNewsView();
 
     }
 
     useEffect(() => {
         updateCompanyIds(tags);
-    }, [tags]);
+    });
 
     useEffect(() => {
-        fetchData(filterYears[0]);
-        //fetchNewsData(new Date().getMonth(),filterYears[0]);
+        fetchData(selectedYear);
+        fetchNewsData(new Date().getMonth()+1, selectedYear);
     }, []);
 
     return (
@@ -171,7 +181,7 @@ const App = () => {
                 />
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Control as="select" defaultValue={filterYears[0]} onChange={handleYearSelect}>
+                        <Form.Control as="select" defaultValue={selectedYear} onChange={handleYearSelect}>
                         {
                             filterYears.map((year) => {
                                 return (<option>{year}</option>)
@@ -214,10 +224,11 @@ const App = () => {
                         {
                             companyIds.map(company=>{
                                 return (newsData.map((news, index) => {
-                                    if(company.id===news.companyID){
+                                    if(company.id===news.company){
                                         return (<NewsCard
                                             postId={index}
-                                            companyID = {news.companyID}
+                                            companyID = {news.company}
+                                            company = {company}
                                             title={`${news.title}`}
                                             subtitle={`${news.subtitle}`}
                                             text={`${news.text}`}

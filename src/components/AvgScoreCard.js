@@ -1,17 +1,13 @@
 import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card'
+import Badge from 'react-bootstrap/Badge'
 
 class AvgScoreCard extends React.Component {
 
     render() {
 
         return (
-            <Card style={{ backgroundColor:this.props.company.color, marginLeft:'55px', width: '4.8rem', height: '4.5rem'}}>
-                <Card.Body><strong>
-                    <Card.Subtitle>{this.props.company.id}</Card.Subtitle>
-                    <Card.Text>0.5</Card.Text>
-                </strong></Card.Body>
-            </Card>
+            <Badge style={{ backgroundColor:this.props.company.color, color: '#eee', marginLeft:'55px' }}variant="dark">{this.props.company.id+'    '+this.props.company.avgScore}</Badge>
         )
     }
 };

@@ -200,7 +200,7 @@ const App = () => {
                     </LineChart>
                 </div>
                 <div className="news-view">
-                    <h6><strong>Top Articles</strong></h6>
+                    <h6><strong>Most Recent Articles</strong></h6>
                     <div className='overflow-scrolling'>
                         {
                             tags.map(company=>{

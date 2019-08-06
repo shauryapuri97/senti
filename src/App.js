@@ -3,30 +3,13 @@ import logo from './assets/Logo.png'
 import './App.css';
 import Button from 'react-bootstrap/Button'
 import { WithContext as ReactTags } from 'react-tag-input';
-import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import NewsCard from './components/NewsCard'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
 import renderHTML from 'react-render-html';
 import axios from 'axios';
 import AvgScoreCard from './components/AvgScoreCard'
-import OverflowScrolling from 'react-overflow-scrolling';
-
-const articleQuantdata = [
-    {name: 'Week 1', quant: 100},
-    {name: 'Week 2', quant: 150},
-    {name: 'Week 3', quant: 80},
-    {name: 'Week 4', quant: 50},
-    {name: 'Week 5', quant: 300},
-    {name: 'Week 1', quant: 100},
-    {name: 'Week 2', quant: 150},
-    {name: 'Week 3', quant: 80},
-    {name: 'Week 4', quant: 50},
-    {name: 'Week 5', quant: 300},
-    {name: 'Week 4', quant: 50},
-    {name: 'Week 5', quant: 300}
-
-];
 
 const KeyCodes = {
     comma: 188,
@@ -36,19 +19,17 @@ const KeyCodes = {
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 //Set the Years filter
-const yearsFilter = [];
+const filterYears = [];
 const setYearsFilter = (currentYear) => {
     let i = 0;
     while(i<8){
-        yearsFilter.push(currentYear--);
+        filterYears.push(currentYear--);
         i++;
     }
 }
 setYearsFilter(new Date().getFullYear());
 
 const App = () => {
-
-    const [data, setData] = useState([]);
 
     const [tags, setTags] = useState([
         { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}
@@ -69,18 +50,15 @@ const App = () => {
         { id: 'BAR', text: 'Barclays', color:'#82ccdd', avgScore: 0.32}, //sky blue
     ]);
 
+    const [selectedYear, setSelectedYear] = useState(filterYears[0]);
+    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [data, setData] = useState([]);
     const [newsData, setNewsData] = useState([]);
 
     const [lgShow, setLgShow] = useState(false);
-    const [companyIds, updateCompanyIds] = useState(tags);
-    const [filterYears, setFilterYear] = useState(yearsFilter);
     const [selectedNews, updateSelectedNews] = useState(null);
-    const [selectedYear, setSelectedYear] = useState(filterYears[0]);
+    const [newsView, setNewsView] = useState([]);
 
-    const arr =[];
-    const [newsView, updateNewsView] = useState(arr);
-
-    //GET SCORES DATA FROM SERVER
     const fetchData = async (selectedYear) => {
         const result = await axios(
             'http://52.17.50.92/api/getScores/'+selectedYear,
@@ -88,29 +66,48 @@ const App = () => {
     
         setData(result.data);
     };
-    // //GET SUGGESTIONS DATA WITH COLOR CODES AND AVG YEARLY SCORES
-    // const fetchAvgScoresData = async (selectedYear) => {
-    //     const result = await axios(
-    //         'http://52.17.50.92/api/getScores/'+selectedYear,
-    //     );
-    
-    //     setSuggestions(result.data);
-    // };
 
-    //GET NEWS DATA
-    const fetchNewsData = async (selectedMonth, selectedYear) => {
+    const fetchNewsData = async (selectedYear) => {
         const result = await axios(
             'http://52.17.50.92/api/articles/'+selectedYear,
         );
-        
-        let arr = [];
-        result.data.forEach(result=>{
-            if(selectedMonth === result.month){
-                arr.push(result);
-            }
-        });
-        setNewsData(arr);
+    
+        setNewsData(result.data);
     };
+
+    useEffect(()=>{
+        fetchData(selectedYear);
+        fetchNewsData(selectedYear);
+    },[selectedYear]);
+
+    useEffect(()=>{
+
+        let arr = [];
+        if(selectedMonth===null){
+            if(selectedYear!==new Date().getFullYear()){
+                newsData.forEach(news=>{
+                    if(12 === news.month){
+                        arr.push(news);
+                    }
+                });
+            } else {
+                newsData.forEach(news=>{
+                    if(new Date().getMonth()+1 === news.month){
+                        arr.push(news);
+                    }
+                });
+            }
+            
+        } else {
+            newsData.forEach(news=>{
+                if((selectedMonth === news.month)){
+                    arr.push(news);
+                }
+            });
+        }
+
+        setNewsView(arr);
+    },[newsData, selectedYear, selectedMonth, tags])
 
     const handleDelete = (i) => {
         setTags(tags => 
@@ -135,35 +132,19 @@ const App = () => {
     }
 
     const handleYearSelect = (e) => {
-        fetchData(e.target.value);
-        setSelectedYear(e.target.value);
-        fetchNewsData(12, e.target.value);
+        setSelectedMonth(null);
+        setSelectedYear(new Date(e.target.value).getFullYear());
     }
 
     const handleNewsUpdate = (e) => {
-        
-       //console.log(newsView);
-       console.log(e.activeTooltipIndex+1);
-       fetchNewsData(e.activeTooltipIndex+1, selectedYear);
-        // updateNewsView();
-
+        setSelectedMonth(e.activeTooltipIndex+1);
     }
-
-    useEffect(() => {
-        updateCompanyIds(tags);
-    });
-
-    useEffect(() => {
-        fetchData(selectedYear);
-        fetchNewsData(new Date().getMonth()+1, selectedYear);
-    }, []);
 
     return (
         <div className="App">
             <div className="Navbar">
                 <nav>
                     <div className="nav-wrapper">
-                    {/* <a href={logo} class="brand-logo">Logo</a> */}
                     <img src={logo} className="App-logo" alt="logo" />
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><Button className="App-Button" variant="primary">Log Out</Button></li>
@@ -197,7 +178,7 @@ const App = () => {
                     <h6 style={{ marginLeft:'55px' }}><strong>Average Senti Scores</strong></h6>
                     <div className="avg-company-view">
                         {
-                            companyIds.map((company) => {
+                            tags.map((company) => {
                                 return (<AvgScoreCard
                                     company={company}
                                 />)
@@ -208,7 +189,7 @@ const App = () => {
                     <LineChart width={850} height={450} onClick={handleNewsUpdate} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Legend />
                         {
-                            companyIds.map((company) => {
+                            tags.map((company) => {
                                 return (<Line type='monotone' dataKey={`${company.id}`} stroke={`${company.color}`}/>)
                             })
                         }
@@ -222,16 +203,16 @@ const App = () => {
                     <h6><strong>Top Articles</strong></h6>
                     <div className='overflow-scrolling'>
                         {
-                            companyIds.map(company=>{
-                                return (newsData.map((news, index) => {
+                            tags.map(company=>{
+                                return (newsView.map((news, index) => {
                                     if(company.id===news.company){
                                         return (<NewsCard
-                                            postId={index}
+                                            url={news.url}
                                             companyID = {news.company}
                                             company = {company}
                                             title={`${news.title}`}
-                                            subtitle={`${news.subtitle}`}
-                                            text={`${news.text}`}
+                                            text={`${news.body}`}
+                                            HTMLtext={`${news.bodyHTML}`}
                                             link={`${news.link}`}
                                             setLgShow={setLgShow}
                                             lgShow={lgShow}
@@ -258,7 +239,7 @@ const App = () => {
                         {newsData[selectedNews]?newsData[selectedNews].title:" "}
                     </Modal.Title>
                 </Modal.Header>
-                {renderHTML(newsData[selectedNews]?newsData[selectedNews].text:" ")}
+                {renderHTML(newsData[selectedNews]?newsData[selectedNews].HTMLtext:" ")}
             </Modal>
         </div>
     );

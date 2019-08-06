@@ -91,9 +91,13 @@ const App = () => {
     useEffect(()=>{
         fetchData(selectedYear);
         fetchNewsData(selectedYear);
-        fetchStockData(tags[0].id);
-    },[selectedYear, tags]);
+    },[selectedYear]);
 
+    useEffect(()=>{
+        fetchStockData(tags[0].id);
+    },[tags])
+
+    
     useEffect(()=>{
 
         let arr = [];
@@ -282,6 +286,8 @@ const App = () => {
     const handleYearSelect = (e) => {
         setSelectedMonth(null);
         setSelectedYear(new Date(e.target.value).getFullYear());
+        if(toggle===true)
+            setToggle(false);
     }
 
     const handleNewsUpdate = (e) => {

@@ -43,13 +43,13 @@ const App = () => {
         { id: 'TES', text: 'Tesla', color:'#e82127', avgScore: 0.43}, //TSLA
         { id: 'SPO', text: 'Spotify', color:'#84bd00', avgScore: 0.57}, //SPOT
         { id: 'CS', text: 'Credit Suisse', color:'#2c3e50', avgScore: 0.66}, //CS
-        { id: 'ASO', text: 'ASOS', color:'#ffbfcf', avgScore: 0.92}, //pink
-        { id: 'ABC', text: 'Alphabet', color:'#f39c12', avgScore: -0.54}, //orange
-        { id: 'AMZ', text: 'Amazon', color:'#f1c40f', avgScore: -0.25}, //yellow
-        {id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d', avgScore: -0.91}, //grey
-        { id: 'FB', text: 'Facebook', color:'#4a69bd', avgScore: 0.22}, //navy blue
-        { id: 'GMS', text: 'Goldman Sachs', color:'#f8c291', avgScore: 0.25}, //skin
-        { id: 'BAR', text: 'Barclays', color:'#82ccdd', avgScore: 0.32}, //sky blue
+        { id: 'ASO', text: 'ASOS', color:'#ffbfcf', avgScore: 0.92}, //ASC
+        { id: 'ABC', text: 'Alphabet', color:'#f39c12', avgScore: -0.54}, //GOOGL
+        { id: 'AMZ', text: 'Amazon', color:'#f1c40f', avgScore: -0.25}, //AMZN
+        {id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d', avgScore: -0.91}, //MS
+        { id: 'FB', text: 'Facebook', color:'#4a69bd', avgScore: 0.22}, //FB
+        { id: 'GMS', text: 'Goldman Sachs', color:'#f8c291', avgScore: 0.25}, //GS
+        { id: 'BAR', text: 'Barclays', color:'#82ccdd', avgScore: 0.32}, //BARC
     ]);
 
     const [selectedYear, setSelectedYear] = useState(filterYears[0]);
@@ -94,8 +94,10 @@ const App = () => {
     },[selectedYear]);
 
     useEffect(()=>{
-        fetchStockData(tags[0].id);
-        setTimeout(function() { togglePrep(); }, 2000);
+        if(tags[0]!=null){
+            fetchStockData(tags[0].id);
+            setTimeout(function() { togglePrep(); }, 2000);
+        }
     },[tags])
 
     
@@ -257,7 +259,7 @@ const App = () => {
     }
 
     const onToggle = () => {
-        if(toggle===false)
+        if(toggle===false && tags[0]!=null)
             togglePrep();
         setToggle(!toggle);
     }
@@ -331,8 +333,8 @@ const App = () => {
                 </Form>
                 <Toggle
                     onClick={onToggle}
-                    on={'Stock On'}
-                    off={'Stock Off'}
+                    on={'On'}
+                    off={'Off'}
                     size="xs"
                     offstyle="danger"
                     active={toggle}
@@ -365,10 +367,10 @@ const App = () => {
                         <XAxis dataKey="name" />
                         <YAxis yAxisId="left" orientation='left' />
                         { 
-                            toggle === true ? <YAxis yAxisId="right" orientation='right' /> : null
+                            toggle === true && tags[0]!=null ? <YAxis yAxisId="right" orientation='right' /> : null
                         }
                         {
-                            toggle === true ? <Line yAxisId="right" type='monotone' dataKey={[tags[0].id].toString()+'StockPrice'} stroke={`${tags[0].color}`} strokeDasharray="5 5"/> : null
+                            toggle === true && tags[0]!=null ? <Line yAxisId="right" type='monotone' dataKey={[tags[0].id].toString()+'StockPrice'} stroke={`${tags[0].color}`} strokeDasharray="5 5"/> : null
                         }
                         <Tooltip />
                     </ComposedChart>

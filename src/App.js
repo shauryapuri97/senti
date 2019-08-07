@@ -17,7 +17,7 @@ const KeyCodes = {
     enter: 13,
 };
 
-const apiKey = '64V2GZ0TDHT7A8XJ';
+const apiKey = 'KQEBNGCZU10RREQM';
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 //Set the Years filter
@@ -34,7 +34,7 @@ setYearsFilter(new Date().getFullYear());
 const App = () => {
 
     const [tags, setTags] = useState([
-        { id: 'JPM', text: 'JP Morgan', color:'#4E342E', avgScore: 0.32}, //brown
+        { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}, //DBX
     ]);
 
     const [suggestions, setSuggestions] = useState([
@@ -61,6 +61,7 @@ const App = () => {
     const [selectedNews, updateSelectedNews] = useState(null);
     const [newsView, setNewsView] = useState([]);
     const [toggle, setToggle] = useState(false);
+    const [stockMetaData, setStockMetaData] = useState([]);
 
     const fetchData = async (selectedYear) => {
         const result = await axios(
@@ -79,15 +80,56 @@ const App = () => {
     };
 
     const fetchStockData = async (symbol) => {
-        const result = await axios(
-            'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol='+symbol+'&apikey='+apiKey+'&datatype=json'
-        );
-        
-        let sData = result.data['Monthly Time Series'];
+        if(symbol==='DB')
+            symbol = 'DBX'
+        else if(symbol==='TES')
+            symbol = 'TSLA'
+        else if(symbol==='SPO')
+            symbol = 'SPOT'
+        else if(symbol==='ASO')
+            symbol = 'ASC'
+        else if(symbol==='ABC')
+            symbol = 'GOOGL'
+        else if(symbol==='AMZ')
+            symbol = 'AMZN'
+        else if(symbol==='GMS')
+            symbol = 'GS'
+        else if(symbol==='BAR')
+            symbol = 'BCS'
 
-        setStockData(sData);
+        if(stockMetaData.length > 0 && stockMetaData['2. Symbol']) {
+
+        } else {
+
+        }
+
+        if(stockMetaData.length === 0){
+            const result = await axios(
+                'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol='+symbol+'&apikey='+apiKey+'&datatype=json'
+            );
+            
+            let sData = result.data['Monthly Time Series'];
+            let mData = result.data['Meta Data'];
+    
+            setStockMetaData(mData);
+            setStockData(sData);
+        } else {
+            if(stockMetaData['2. Symbol']!==symbol){
+                const result = await axios(
+                    'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol='+symbol+'&apikey='+apiKey+'&datatype=json'
+                );
+                
+                let sData = result.data['Monthly Time Series'];
+                let mData = result.data['Meta Data'];
+        
+                setStockMetaData(mData);
+                setStockData(sData);
+            }
+        }
+
     }
-    //seperate useeffect for tags
+
+
     useEffect(()=>{
         fetchData(selectedYear);
         fetchNewsData(selectedYear);
@@ -133,129 +175,158 @@ const App = () => {
     const togglePrep = () => {
         
         const keyName = tags[0].id+'StockPrice';
-        data.forEach((monthData,index)=>{
-            if (index===0){
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf([selectedYear-1]+'-12')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-
-            } else if (index===1) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-01')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-
-            } else if (index===2) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-02')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+        
+        if(stockData!==null){
+            data.forEach((monthData,index)=>{
+                if (index===0){
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf([selectedYear-1]+'-12')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+                    console.log(sdata);
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+    
+                } else if (index===1) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-01')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+    
+                } else if (index===2) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-02')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===3) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-03')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===4) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-04')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===5) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-05')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===6) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-06')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===7) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-07')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===8) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-08')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===9) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-09')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===10) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-10')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                } else if (index===11) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-11')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                    }
+                    
+                }
                 
-            } else if (index===3) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-03')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===4) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-04')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===5) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-05')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===6) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-06')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===7) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-07')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===8) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-08')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===9) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-09')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===10) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-10')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            } else if (index===11) {
-                const sdata = Object.keys(stockData)
-                    .filter(key => key.toString().indexOf(selectedYear+'-11')!==-1)
-                    .reduce((obj,key)=>{
-                        obj[key] = stockData[key];
-                        return obj;
-                    },{})
-
-                    monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                
-            }
-        });
+            });
+        }
+        
     }
 
     const onToggle = () => {
@@ -272,7 +343,6 @@ const App = () => {
  
     const handleAddition = (tag) => {
         setTags(tags => ([...tags, tag]));
-        fetchStockData(tag.id);
     }
 
 

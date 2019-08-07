@@ -24,7 +24,7 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
 const filterYears = [];
 const setYearsFilter = (currentYear) => {
     let i = 0;
-    while(i<8){
+    while(i<4){
         filterYears.push(currentYear--);
         i++;
     }

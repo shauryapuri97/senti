@@ -38,11 +38,11 @@ const App = () => {
     ]);
 
     const [suggestions, setSuggestions] = useState([
-        { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}, //blue
-        { id: 'JPM', text: 'JP Morgan', color:'#4E342E', avgScore: 0.32}, //brown
-        { id: 'TES', text: 'Tesla', color:'#e82127', avgScore: 0.43}, //red
-        { id: 'SPO', text: 'Spotify', color:'#84bd00', avgScore: 0.57}, //green
-        { id: 'CS', text: 'Credit Suisse', color:'#2c3e50', avgScore: 0.66}, //black
+        { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}, //DBX
+        { id: 'JPM', text: 'JP Morgan', color:'#4E342E', avgScore: 0.32}, //JPM
+        { id: 'TES', text: 'Tesla', color:'#e82127', avgScore: 0.43}, //TSLA
+        { id: 'SPO', text: 'Spotify', color:'#84bd00', avgScore: 0.57}, //SPOT
+        { id: 'CS', text: 'Credit Suisse', color:'#2c3e50', avgScore: 0.66}, //CS
         { id: 'ASO', text: 'ASOS', color:'#ffbfcf', avgScore: 0.92}, //pink
         { id: 'ABC', text: 'Alphabet', color:'#f39c12', avgScore: -0.54}, //orange
         { id: 'AMZ', text: 'Amazon', color:'#f1c40f', avgScore: -0.25}, //yellow
@@ -95,6 +95,7 @@ const App = () => {
 
     useEffect(()=>{
         fetchStockData(tags[0].id);
+        setTimeout(function() { togglePrep(); }, 2000);
     },[tags])
 
     
@@ -256,7 +257,8 @@ const App = () => {
     }
 
     const onToggle = () => {
-        togglePrep();
+        if(toggle===false)
+            togglePrep();
         setToggle(!toggle);
     }
 
@@ -281,6 +283,8 @@ const App = () => {
  
         // re-render
         setTags(newTags);
+        if(toggle===true)
+            setToggle(false);
     }
 
     const handleYearSelect = (e) => {

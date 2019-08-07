@@ -335,9 +335,12 @@ const App = () => {
                     onClick={onToggle}
                     on={'On'}
                     off={'Off'}
-                    size="xs"
+                    size="sm"
                     offstyle="danger"
                     active={toggle}
+                    height={'2.5rem'}
+                    width={'4.5rem'}
+                    style ={{marginLeft:'.7rem'}}
                 />
 
             </div>

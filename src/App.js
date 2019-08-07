@@ -46,7 +46,7 @@ const App = () => {
         { id: 'ASO', text: 'ASOS', color:'#ffbfcf', avgScore: 0.92}, //ASC
         { id: 'ABC', text: 'Alphabet', color:'#f39c12', avgScore: -0.54}, //GOOGL
         { id: 'AMZ', text: 'Amazon', color:'#f1c40f', avgScore: -0.25}, //AMZN
-        {id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d', avgScore: -0.91}, //MS
+        { id: 'MS', text: 'Morgan Stanley', color:'#7f8c8d', avgScore: -0.91}, //MS
         { id: 'FB', text: 'Facebook', color:'#4a69bd', avgScore: 0.22}, //FB
         { id: 'GMS', text: 'Goldman Sachs', color:'#f8c291', avgScore: 0.25}, //GS
         { id: 'BAR', text: 'Barclays', color:'#82ccdd', avgScore: 0.32}, //BARC
@@ -80,9 +80,7 @@ const App = () => {
     };
 
     const fetchStockData = async (symbol) => {
-        if(symbol==='DB')
-            symbol = 'DBX'
-        else if(symbol==='TES')
+        if(symbol==='TES')
             symbol = 'TSLA'
         else if(symbol==='SPO')
             symbol = 'SPOT'

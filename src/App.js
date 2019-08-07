@@ -37,6 +37,7 @@ const App = () => {
         { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}, //DBX
     ]);
 
+
     const [suggestions, setSuggestions] = useState([
         { id: 'DB', text: 'Deutsche Bank', color:'#15598A', avgScore: 0.21}, //DBX
         { id: 'JPM', text: 'JP Morgan', color:'#4E342E', avgScore: 0.32}, //JPM
@@ -62,7 +63,14 @@ const App = () => {
     const [newsView, setNewsView] = useState([]);
     const [toggle, setToggle] = useState(false);
     const [stockMetaData, setStockMetaData] = useState([]);
+    
+    const fetchSuggestions = async (selectedYear) => {
+        const result = await axios(
+            'http://52.17.50.92/api/suggestions/'+selectedYear,
+        );
 
+        setSuggestions(result.data);
+    }
     const fetchData = async (selectedYear) => {
         const result = await axios(
             'http://52.17.50.92/api/getScores/'+selectedYear,
@@ -95,12 +103,6 @@ const App = () => {
         else if(symbol==='BAR')
             symbol = 'BCS'
 
-        if(stockMetaData.length > 0 && stockMetaData['2. Symbol']) {
-
-        } else {
-
-        }
-
         if(stockMetaData.length === 0){
             const result = await axios(
                 'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol='+symbol+'&apikey='+apiKey+'&datatype=json'
@@ -127,8 +129,12 @@ const App = () => {
 
     }
 
+    useEffect(()=>{
+        setTags([suggestions[0]]);
+    },[])
 
     useEffect(()=>{
+        fetchSuggestions(selectedYear);
         fetchData(selectedYear);
         fetchNewsData(selectedYear);
     },[selectedYear]);
@@ -140,7 +146,20 @@ const App = () => {
         }
     },[tags])
 
-    
+    useEffect(()=>{
+        let arr = [];
+
+        tags.forEach(tag=>{
+            suggestions.forEach((suggest,index)=>{
+                if(tag.id === suggest.id){
+                    arr.push(suggest);
+                }
+            })
+        })
+
+        setTags(arr);
+    },[suggestions])
+
     useEffect(()=>{
 
         let arr = [];
@@ -417,22 +436,26 @@ const App = () => {
                     <h6 style={{ marginLeft:'55px' }}><strong>Average Senti Scores</strong></h6>
                     <div className="avg-company-view">
                         {
-                            tags.map((company) => {
-                                return (<AvgScoreCard
-                                    company={company}
-                                />)
-                            })
+                            tags.length!==0 ? 
+                                tags.map((company) => {
+                                    return (<AvgScoreCard
+                                        company={company}
+                                    />)
+                                })
+                            : null
                         }
                     </div>
                     <h6 style={{ marginLeft:'55px' }}><strong>Senti Scores Over Time</strong></h6>
                     <ComposedChart width={850} height={450} onClick={handleNewsUpdate} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Legend />
                         {
-                            tags.map((company) => {
-                                return (
-                                    <Line yAxisId="left" type='monotone' dataKey={`${company.id}`} stroke={`${company.color}`}/>
-                                )
-                            })
+                            tags.length!==0 ?
+                                tags.map((company) => {
+                                    return (
+                                        <Line yAxisId="left" type='monotone' dataKey={`${company.id}`} stroke={`${company.color}`}/>
+                                    )
+                                })
+                            : null
                         }
                         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                         <XAxis dataKey="name" />

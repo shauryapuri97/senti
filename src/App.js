@@ -18,6 +18,8 @@ const KeyCodes = {
 };
 
 const apiKey = 'KQEBNGCZU10RREQM';
+// const apiKey = 'VE4P5UFMQTKNU604';
+
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 //Set the Years filter
@@ -197,29 +199,16 @@ const App = () => {
             data.forEach((monthData,index)=>{
                 if (index===0){
                     const sdata = Object.keys(stockData)
-                        .filter(key => key.toString().indexOf([selectedYear-1]+'-12')!==-1)
+                        .filter(key => key.toString().indexOf([selectedYear]+'-01')!==-1)
                         .reduce((obj,key)=>{
                             obj[key] = stockData[key];
                             return obj;
                         },{})
-                    console.log(sdata);
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
     
                 } else if (index===1) {
-                    const sdata = Object.keys(stockData)
-                        .filter(key => key.toString().indexOf(selectedYear+'-01')!==-1)
-                        .reduce((obj,key)=>{
-                            obj[key] = stockData[key];
-                            return obj;
-                        },{})
-    
-                    if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
-                    }
-    
-                } else if (index===2) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-02')!==-1)
                         .reduce((obj,key)=>{
@@ -228,10 +217,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
-                    
-                } else if (index===3) {
+    
+                } else if (index===2) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-03')!==-1)
                         .reduce((obj,key)=>{
@@ -240,10 +229,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===4) {
+                } else if (index===3) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-04')!==-1)
                         .reduce((obj,key)=>{
@@ -252,10 +241,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===5) {
+                } else if (index===4) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-05')!==-1)
                         .reduce((obj,key)=>{
@@ -264,10 +253,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===6) {
+                } else if (index===5) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-06')!==-1)
                         .reduce((obj,key)=>{
@@ -276,10 +265,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===7) {
+                } else if (index===6) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-07')!==-1)
                         .reduce((obj,key)=>{
@@ -288,10 +277,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===8) {
+                } else if (index===7) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-08')!==-1)
                         .reduce((obj,key)=>{
@@ -300,10 +289,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===9) {
+                } else if (index===8) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-09')!==-1)
                         .reduce((obj,key)=>{
@@ -312,10 +301,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===10) {
+                } else if (index===9) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-10')!==-1)
                         .reduce((obj,key)=>{
@@ -324,10 +313,10 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
-                } else if (index===11) {
+                } else if (index===10) {
                     const sdata = Object.keys(stockData)
                         .filter(key => key.toString().indexOf(selectedYear+'-11')!==-1)
                         .reduce((obj,key)=>{
@@ -336,7 +325,19 @@ const App = () => {
                         },{})
     
                     if(Object.entries(sdata).length !== 0){
-                        monthData[keyName] = parseInt(sdata[Object.keys(sdata)]['4. close'],10);
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
+                    }
+                    
+                } else if (index===11) {
+                    const sdata = Object.keys(stockData)
+                        .filter(key => key.toString().indexOf(selectedYear+'-12')!==-1)
+                        .reduce((obj,key)=>{
+                            obj[key] = stockData[key];
+                            return obj;
+                        },{})
+    
+                    if(Object.entries(sdata).length !== 0){
+                        monthData[keyName] = parseFloat(sdata[Object.keys(sdata)]['1. open']).toFixed(2);
                     }
                     
                 }

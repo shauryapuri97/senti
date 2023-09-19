@@ -1,3 +1,14 @@
+#SENTI 
+
+A sentiment analysis tool built as part of my summer intern program at Deutsche Bank, it compares the price of a stock against it's market sentiment over time.
+
+LinkedIn post: https://www.linkedin.com/posts/shaurya-puri_nodejs-python-nlp-activity-6565550644202098688-VqbZ?utm_source=share&utm_medium=member_desktop
+
+https://github.com/shauryapuri97/senti/assets/23358500/6c30036e-f84e-430a-a173-d561eb30c5e8
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
